@@ -1,3 +1,4 @@
+import 'normalize.css/normalize.css'; // 引入 normalize.css
 import {createApp} from 'vue';
 import {createPinia} from 'pinia';
 
