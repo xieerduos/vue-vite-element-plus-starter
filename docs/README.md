@@ -864,7 +864,13 @@ https://github.com/commitizen/cz-cli
 
 ```bash
 npm install -g commitizen
-# OR
+```
+
+```bash
+commitizen init cz-conventional-changelog --save-dev --save-exact
+```
+
+```bash
 npm install --save-dev commitizen
 ```
 
@@ -872,6 +878,10 @@ npm install --save-dev commitizen
   "scripts": {
     "commit": "cz"
   }
+```
+
+```bash
+npm run commit
 ```
 
 ### 5. 生成 CHANGELOG 文件
@@ -901,6 +911,37 @@ conventional-changelog -p angular -i CHANGELOG.md -s
   }
 }
 ```
+
+**这个命令如果我不希望使用 angular 规范怎么修改**
+
+如果您不想使用 Angular 生成 changelog，您可以替换 -p angular 参数为您想要使用的其他预设或自定义配置文件。conventional-changelog 支持以下预设：
+
+```
+angular
+atom
+codemirror
+ember
+eslint
+express
+jquery
+jshint
+jscs
+karma
+protractor
+typescript
+unreleased
+```
+```bash
+conventional-changelog -p typescript -i CHANGELOG.md -w -r 0
+```
+
+如果您想使用自定义配置文件，则可以使用 -p 参数后面跟一个指向您的自定义配置文件的路径。例如，如果您的自定义配置文件在当前目录中的 myconfig.js 文件中，则命令应如下所示：
+
+```bash
+conventional-changelog -p ./myconfig.js -i CHANGELOG.md -w -r 0
+```
+
+注意，您需要根据自己的需求自定义配置文件，并按照 conventional-changelog 的文档编写该文件，以确保正确生成 changelog。
 
 ### 6. release-please (不讲)
 
