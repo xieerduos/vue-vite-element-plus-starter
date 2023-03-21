@@ -11,7 +11,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .eslintignore",
     "format": "prettier --write src/",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -s -r 0"
   },
   "dependencies": {
     "pinia": "^2.0.32",
