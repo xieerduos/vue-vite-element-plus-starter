@@ -707,11 +707,11 @@ docs/docsify@4
 
 3. <p>解决vue svg图标组件问题</p>
 
-  .eslintignore 增加如下规则
+.eslintignore 增加如下规则
 
-  ```.eslintignore
-  /src/components/icons/
-  ```
+```.eslintignore
+/src/components/icons/
+```
 
 ### 6. git commit 之前先进行 eslint 校验和自动修复
 
@@ -1604,7 +1604,7 @@ export default defineConfig({
 
 在上面的示例中，chunkFileNames 的值为 `[name]-[hash].js`，表示生成的 chunk 文件名将由模块的名称和 hash 值组成。比如，一个名为 foo.js 的 chunk，可能生成的文件名为 foo-abcdefg.js。
 
-###  5. **Vite 打包优化** Content Delivery Network(cdn)
+### 5. **Vite 打包优化** Content Delivery Network(cdn)
 
 https://blog.csdn.net/m0_68324632/article/details/126828350
 
