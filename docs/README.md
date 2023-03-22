@@ -1605,6 +1605,8 @@ https://element-plus.gitee.io/zh-CN/guide/theming.html
 
 https://element-plus.gitee.io/zh-CN/guide/dark-mode.html
 
+#### (1) 如何修改系统主题
+
 - Windows10 系统 - 鼠标右键 - 个性化 - 颜色 - 选择颜色 - 选择浅色/深色
 
   <img src="./docsify@4/windows10_theme_light_dark.pic.jpg" style="max-height: 200px;"/>
@@ -1614,34 +1616,9 @@ https://element-plus.gitee.io/zh-CN/guide/dark-mode.html
 
 ---
 
-ElementPlus 暗黑色模式 https://element-plus.gitee.io/zh-CN/guide/dark-mode.html
+#### (2) **实现原理**
 
-ElementPlus 提供的例子 https://github.com/element-plus/element-plus-vite-starter
-
-1. 把`src/styles/`,`src/composables/`目录拷贝过来
-
-2. main.ts 中引入
-
-```ts
-import '@/styles/index.scss';
-```
-
-3. 组件中使用
-
-```vue
-<script setup lang="ts">
-import {toggleDark} from '@/composables';
-</script>
-
-<template>
-  <main>hello 李钟意</main>
-  <div class="button-group">
-    <el-button plain @click="toggleDark()">切换主题</el-button>
-  </div>
-</template>
-```
-
-4. 监听系统主题变化 - 自动切换主题
+监听系统主题变化 - 自动切换主题
 
 ```vue
 <script setup lang="ts">
@@ -1673,7 +1650,13 @@ onUnmounted(() => {
 </template>
 ```
 
-5. 这段代码是什么意思
+#### (3) 实现暗黑模式官方例子
+
+ElementPlus 暗黑色模式 https://element-plus.gitee.io/zh-CN/guide/dark-mode.html
+
+ElementPlus 提供的例子 https://github.com/element-plus/element-plus-vite-starter
+
+#### (4) **`color-scheme: dark`是什么意思**
 
 MDN color-scheme https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme
 
@@ -1689,11 +1672,98 @@ html {
 
 通过设置 color-scheme 属性，可以使文档自动适应用户所使用的系统颜色方案，提供更好的可访问性和用户体验。如果用户的系统设置为暗色模式，那么文档会自动使用暗色模式的颜色方案，反之亦然。
 
+#### (5) **实现步骤**
+
+1. 把`src/styles/`,`src/composables/`目录拷贝过来
+
+2. main.ts 中引入
+
+```ts
+import '@/styles/index.scss';
+```
+
+3. App.vue 引入命名空间
+
+```vue
+<script setup lang="ts">
+import {RouterLink, RouterView} from 'vue-router';
+</script>
+
+<template>
+  <el-config-provider namespace="ep">
+    <header>
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
+    </header>
+    <RouterView />
+  </el-config-provider>
+</template>
+
+<style scoped></style>
+```
+
+4. vite.config.ts 修改如下
+
+```ts
+export default defineConfig(({command, mode}) => {
+  // 根据当前工作目录中的 `mode` 加载 .env 文件
+  // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    // ...
+    plugins: [
+      vue(),
+      vueJsx(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()]
+      }),
+      Components({
+        extensions: ['vue', 'md'],
+        // allow auto import and register components used in markdown
+        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+        resolvers: [
+          ElementPlusResolver({
+            importStyle: 'sass'
+          })
+        ],
+        dts: 'src/components.d.ts'
+      })
+    ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/styles/element/index.scss" as *;'
+        }
+      }
+    }
+  };
+});
+```
+
+5. 组件中使用
+
+```vue
+<script setup lang="ts">
+import {toggleDark} from '@/composables';
+</script>
+
+<template>
+  <main>hello 李钟意</main>
+  <div class="button-group">
+    <el-button plain @click="toggleDark()">切换主题</el-button>
+  </div>
+</template>
+```
+
 ### 3. **自定义命名空间**
 
 https://element-plus.gitee.io/zh-CN/guide/namespace.html
 
 切换主题颜色的时候如果没有修改这里 会不生效
+
+1. 修改 App.vue
 
 ```vue
 <el-config-provider namespace="ep">
@@ -1701,59 +1771,7 @@ https://element-plus.gitee.io/zh-CN/guide/namespace.html
 </el-config-provider>
 ```
 
-```ts
-// https://vitejs.dev/config/
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-      // '@': `${pathSrc}/`
-    }
-  },
-
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/styles/element/index.scss" as *;`
-      }
-    }
-  },
-  plugins: [
-    vue(),
-    vueJsx(),
-
-    AutoImport({
-      resolvers: [
-        ElementPlusResolver({
-          // importStyle: 'sass'
-        })
-      ]
-    }),
-    Components({
-      // include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-      resolvers: [
-        ElementPlusResolver({
-          importStyle: 'sass'
-        })
-      ],
-      // extensions: ['vue', 'md'],
-      // dts: 'src/components.d.ts'
-    }),
-
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz'
-    }),
-    visualizer({
-      open: true, // 是否自动打开浏览器窗口以显示可视化报告
-      gzipSize: true, // 是否包含 gzip 压缩后的大小
-      brotliSize: true // 是否包含 Brotli 压缩后的大小
-    }) as PluginOption
-    // chunkSplitPlugin({
-    //   strategy: 'all-in-one'
-    // })
-  ],
-```
+2. 修改 styles/element/index.scss
 
 ---
 

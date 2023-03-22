@@ -30,9 +30,24 @@ export default defineConfig(({command, mode}) => {
         resolvers: [ElementPlusResolver()]
       }),
       Components({
-        resolvers: [ElementPlusResolver()]
+        extensions: ['vue', 'md'],
+        // allow auto import and register components used in markdown
+        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+        resolvers: [
+          ElementPlusResolver({
+            importStyle: 'sass'
+          })
+        ],
+        dts: 'src/components.d.ts'
       })
     ],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/styles/element/index.scss" as *;'
+        }
+      }
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))

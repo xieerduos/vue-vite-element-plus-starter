@@ -1,9 +1,12 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <main>hello 李钟意</main>
+  <div class="button-group">
+    <el-button plain @click="toggleDark()">切换主题</el-button>
   </div>
 </template>
-
+<script setup lang="ts">
+import {toggleDark} from '@/composables';
+</script>
 <style>
 @media (min-width: 1024px) {
   .about {

@@ -1,10 +1,6 @@
-@forward 'element-plus/theme-chalk/src/common/var.scss' with (
-  $colors: (
-    'primary': (
-      'base': green
-    )
-  )
-);
-// 如果只是按需导入，则可以忽略以下内容。
-// 如果你想导入所有样式:
-@use 'element-plus/theme-chalk/src/index.scss' as *;
+// import dark theme
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+// :root {
+//   --ep-color-primary: red;
+// }
