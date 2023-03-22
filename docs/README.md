@@ -1506,13 +1506,17 @@ https://jsonplaceholder.typicode.com/todos/
 
 ## 十六、添加 element-plus 组件库、按需引入配置
 
-https://element-plus.gitee.io/zh-CN/guide/installation
+1. 官网文档
+
+   https://element-plus.gitee.io/zh-CN/guide/installation
+
+2. 安装 element-plus
 
 ```bash
 npm install element-plus --save
 ```
 
-如果您使用 Volar，请在 tsconfig.json 中通过 compilerOptions.type 指定全局组件类型。
+3. 如果您使用 Volar，请在 tsconfig.json 中通过 compilerOptions.type 指定全局组件类型。
 
 ```json
 // tsconfig.json
@@ -1524,24 +1528,86 @@ npm install element-plus --save
 }
 ```
 
-按需引入
+4. 完整引入
+
+```ts
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+
+const app = createApp(App);
+
+app.use(ElementPlus);
+```
+
+5. 按需引入
+
+安装模块
 
 ```bash
 npm install -D unplugin-vue-components unplugin-auto-import
-
 ```
 
-## 十七、切换主题 - 浅色/深色
+修改 vite.config.ts
 
-一键换肤 更换主题颜色
+```ts
+// vite.config.ts
+import {defineConfig} from 'vite';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import {ElementPlusResolver} from 'unplugin-vue-components/resolvers';
+
+export default defineConfig({
+  // ...
+  plugins: [
+    // ...
+    AutoImport({
+      resolvers: [ElementPlusResolver()]
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()]
+    })
+  ]
+});
+```
+
+删掉 node_modules 重新 npm install，重新启动项目
+
+```bash
+npm run dev
+```
+
+对比按需引入和全部引入打包后的文件大小
+
+## 十七、自定义主题、暗黑模式（切换主题 - 浅色/深色）、自定义命名空间
 
 https://element-plus.gitee.io/zh-CN/guide/theming.html
 
-**如何切换亮色-暗黑色**
+### 1. 自定义主题
+
+https://element-plus.gitee.io/zh-CN/guide/theming.html
+
+创建 src/styles/index.scss 文件内容如下
+
+```scss
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': green
+    )
+  )
+);
+// 如果只是按需导入，则可以忽略以下内容。
+// 如果你想导入所有样式:
+@use 'element-plus/theme-chalk/src/index.scss' as *;
+```
+
+### 2. **暗黑模式**
+
+https://element-plus.gitee.io/zh-CN/guide/dark-mode.html
 
 - Windows10 系统 - 鼠标右键 - 个性化 - 颜色 - 选择颜色 - 选择浅色/深色
 
-  <img src="./windows10_theme_light_dark.pic.jpg" style="max-height: 200px;"/>
+  <img src="./docsify@4/windows10_theme_light_dark.pic.jpg" style="max-height: 200px;"/>
   <!-- ![windows10_theme_light_dark.pic.jpg](./docs/windows10_theme_light_dark.pic.jpg) -->
 
 - MacOS - 系统偏好设置 - 外观 - 浅色/深色
@@ -1623,7 +1689,9 @@ html {
 
 通过设置 color-scheme 属性，可以使文档自动适应用户所使用的系统颜色方案，提供更好的可访问性和用户体验。如果用户的系统设置为暗色模式，那么文档会自动使用暗色模式的颜色方案，反之亦然。
 
-**自定义命名空间**
+### 3. **自定义命名空间**
+
+https://element-plus.gitee.io/zh-CN/guide/namespace.html
 
 切换主题颜色的时候如果没有修改这里 会不生效
 
