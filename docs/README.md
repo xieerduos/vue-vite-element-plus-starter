@@ -1840,6 +1840,8 @@ export default defineConfig({
 
 vite.config.ts
 
+按照 node_modules 进行分包
+
 ```ts
  rollupOptions: {
       output: {
@@ -1856,6 +1858,40 @@ vite.config.ts
         }
       }
     }
+```
+
+指定模块进行分包
+
+```ts
+ build: {
+      outDir: mode,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // 文件路径 id
+            console.log(id);
+
+            // @ts-ignore
+            // if (id.includes('node_modules')) {
+            //   return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            // }
+            const chunkArray = ['dayjs', '@element-plus', 'vue', 'vue-router'];
+
+            if (chunkArray.find((chunk) => id.includes(`node_modules/${chunk}/`))) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            }
+            // if (id.includes('node_modules')) {
+            //   return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            // }
+          },
+          chunkFileNames: (chunkInfo) => {
+            const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/') : [];
+            const fileName = facadeModuleId[facadeModuleId.length - 2] || '[name]';
+            return `js/${fileName}/[name].[hash].js`;
+          }
+        }
+      }
+    },
 ```
 
 这段代码是用来配置 Vite 使用 Rollup 打包时的一些选项。其中，output 选项用来配置输出文件的相关选项，这里包括了两个选项：
