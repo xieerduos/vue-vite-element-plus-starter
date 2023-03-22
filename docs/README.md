@@ -1361,7 +1361,89 @@ export function deleteRoles(id: number): Promise<any> {
 
 https://jsonplaceholder.typicode.com/todos/
 
+**使用一个例子演示如何使用这个封装的请求库**
+
+1. 创建`todos.ts`
+
+```ts
+/**
+ * @file 系统管理 => 角色管理 api
+ * @author 程序员李钟意
+ */
+
+import request from '@/utils/request';
+
+export type TodoItem = {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+};
+
+export function getTodos(params: Record<string, unknown> = {}): Promise<{data: TodoItem[]}> {
+  return request({method: 'get', url: '/todos/', params});
+}
+
+export function postTodos(data: any): Promise<any> {
+  return request({method: 'get', url: '/todos/', data});
+}
+```
+
+2. 修改 HomeView.vue 组件
+
+内容如下
+
+```vue
+<template>
+  <main class="home-container">
+    <h1>home</h1>
+
+    <button @click="onClickLog">跳转到log页面</button>
+
+    <ul class="todos-wrap">
+      <li v-for="todo in todos" :key="todo.id" class="todo-item">
+        <span>{{ todo.userId }}</span
+        >, <span>{{ todo.id }}</span
+        >, <span>{{ todo.title }}</span
+        >,
+        <span>{{ todo.completed }}</span>
+      </li>
+    </ul>
+  </main>
+</template>
+
+<script setup lang="ts">
+import {getTodos, type TodoItem} from '@/apis/todos';
+import {useRouter} from 'vue-router';
+import {ref, onMounted} from 'vue';
+
+const router = useRouter();
+function onClickLog() {
+  router.push({path: `/log/${Math.random().toString().slice(2)}`});
+}
+
+const todos = ref<TodoItem[]>([]);
+
+onMounted(() => {
+  getTodos().then((response: {data: TodoItem[]}) => {
+    console.log('data', response.data);
+    todos.value = response.data;
+  });
+});
+</script>
+
+<style lang="scss" scoped>
+.home-container {
+  height: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+</style>
+```
+
 ## 十五、配置反向代理
+
+### Vite 配置
 
 https://cn.vitejs.dev/config/server-options.html#server-proxy
 
@@ -1378,6 +1460,49 @@ https://cn.vitejs.dev/config/server-options.html#server-proxy
     }
   },
 ```
+
+### **Nodejs 例子**
+
+1. 初始化
+
+```bash
+npm init -y
+```
+
+2. 安装模块
+
+```bash
+npm i cors express nodemon --save
+```
+
+https://www.npmjs.com/package/express
+
+index.js
+
+```js
+const express = require('express');
+const app = express();
+
+app.get('/', function (req, res) {
+  res.send('Hello World');
+});
+
+app.listen(3000);
+```
+
+3. 引入跨域资源共享
+
+https://www.npmjs.com/package/cors
+
+```js
+app.use(cors());
+```
+
+4. 返回数据
+
+todos.json
+
+https://jsonplaceholder.typicode.com/todos/
 
 ## 十六、添加 element-plus 组件库、按需引入配置
 
