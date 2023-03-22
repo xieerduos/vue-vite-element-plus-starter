@@ -1158,6 +1158,24 @@ function onClickLog() {
 </style>
 ```
 
+6. 修复 类型错误
+
+router/index.ts
+
+<p style="color:red;">类型“ImportMeta”上不存在属性“env”。ts(2339)</p>
+
+https://github.com/vitejs/vite/pull/5835#issuecomment-1311244502
+
+解决办法，在 tsconfig.json 添加下面内容
+
+```json
+{
+  "compilerOptions": {
+    "types": ["vite/client"]
+  }
+}
+```
+
 ## 十二、Pinia 介绍
 
 简单案例介绍
