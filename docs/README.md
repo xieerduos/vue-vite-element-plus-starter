@@ -931,6 +931,7 @@ protractor
 typescript
 unreleased
 ```
+
 ```bash
 conventional-changelog -p typescript -i CHANGELOG.md -w -r 0
 ```
@@ -1200,13 +1201,26 @@ https://pinia.vuejs.org/zh/
 
 https://cn.vitejs.dev/guide/env-and-mode.html
 
+package.json
+
+```json
+"scripts": {
+    "prod": "run-p type-check build-prod",
+    "rd": "run-p type-check build-rd",
+    "qa": "run-p type-check build-qa",
+    "build-prod": "vite build --mode prod",
+    "build-rd": "vite build --mode rd",
+    "build-qa": "vite build --mode qa",
+  },
+```
+
 .env.development
 
 ```conf
 NODE_ENV=development
 ```
 
-.env.production
+.env.rd
 
 ```conf
 NODE_ENV=production
@@ -1218,16 +1232,15 @@ NODE_ENV=production
 NODE_ENV=production
 ```
 
-package.json
+.env.prod
 
-```json
-    "build": "run-p type-check build-only",
-    "qa": "run-p type-check build-qa",
-    "build-only": "MODE=prod vite build",
-    "build-qa": "MODE=qa vite build --mode qa",
+```conf
+NODE_ENV=production
 ```
 
 vite.config.ts
+
+https://cn.vitejs.dev/config/build-options.html#build-outdir
 
 ```js
   build: {
@@ -1239,12 +1252,20 @@ vite.config.ts
 运行打包命令
 
 ```bash
-# 测试1
-npm run testing
-# 测试2
+# 联调
+npm run rd
+# 测试
 npm run qa
 # 生产｜线上环境
-npm run build
+npm run prod
+```
+
+修改这三个文件的配置 .gitignore .prettierignore .eslintignore
+
+```.gitignore
+/qa
+/rd
+/prod
 ```
 
 ## 十四、utils request axios 请求拦截响应拦截
