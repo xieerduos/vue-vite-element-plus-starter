@@ -1781,13 +1781,15 @@ https://cn.vitejs.dev/guide/features.html#build-optimizations
 
 ### 1. **Vite 打包优化** 路由异步组件
 
-defineAsyncComponent
+1. defineAsyncComponent
 
 解决路径问题
 
 https://cn.vuejs.org/api/general.html#defineasynccomponent
 
-https://ffffee.com
+2. 路由懒加载
+
+src/router/index.ts
 
 ### 2. **Vite 打包优化** vite 打出 .gzip 包怎么做
 
@@ -1796,6 +1798,18 @@ https://github.com/vbenjs/vite-plugin-compression/tree/main#readme
 ```bash
 npm i vite-plugin-compression -D
 
+```
+
+vite.config.ts 中的配置插件
+
+```ts
+import viteCompression from 'vite-plugin-compression';
+
+export default () => {
+  return {
+    plugins: [viteCompression()]
+  };
+};
 ```
 
 ### 3. **Vite 打包优化** 3. webpack 的 webpack-bundle-analyzer 这个插件，在 vite 里面有差不多的插件吗
@@ -1941,7 +1955,9 @@ export default defineConfig({
 </html>
 ```
 
-### 6. **Vite 打包优化** 别名配置
+## 十九 **其他修改**
+
+### 别名配置
 
 ```ts
 import {fileURLToPath, URL} from 'node:url';
@@ -1955,13 +1971,27 @@ export default defineConfig({
 });
 ```
 
-## 十九、Windows nginx 部署项目
+### package.json 添加 docs 命令
+
+```bash
+npm run docs
+```
+
+```json
+{
+  "scripts": {
+    "docs": "docsify serve docs"
+  }
+}
+```
+
+## 二十、Windows nginx 部署项目
 
 1. 安装 nginx
 2. 修改配置文件
 3. 运行 nginx.exe 文件
 
-## 二十、Docker 部署前端项目
+## 二十一、Docker 部署前端项目
 
 https://www.docker.com/products/docker-desktop/
 

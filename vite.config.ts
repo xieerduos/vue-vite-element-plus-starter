@@ -8,6 +8,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers';
 
+import viteCompression from 'vite-plugin-compression';
 // https://vitejs.dev/config/
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,7 +40,8 @@ export default defineConfig(({command, mode}) => {
           })
         ],
         dts: 'src/components.d.ts'
-      })
+      }),
+      viteCompression()
     ],
     css: {
       preprocessorOptions: {
@@ -75,3 +77,5 @@ export default defineConfig(({command, mode}) => {
     }
   };
 });
+
+ 
