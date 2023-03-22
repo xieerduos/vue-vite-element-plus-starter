@@ -28,10 +28,15 @@ export default defineConfig(({command, mode}) => {
     server: {
       proxy: {
         // 带选项写法：http://localhost:5173/api/bar -> http://jsonplaceholder.typicode.com/bar
+        // '/api': {
+        //   target: 'http://jsonplaceholder.typicode.com',
+        //   changeOrigin: true,
+        //   rewrite: (path) => path.replace(/^\/api/, '')
+        // }
         '/api': {
-          target: 'http://jsonplaceholder.typicode.com',
+          target: 'http://localhost:4567',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          // rewrite: (path) => path.replace(/^\/api/, '')
         }
       }
     }
