@@ -4,6 +4,10 @@
 
     <button @click="onClickLog">跳转到log页面</button>
 
+    <el-row class="mb-4">
+      <el-button type="primary">Primary</el-button>
+    </el-row>
+
     <ul class="todos-wrap">
       <li v-for="todo in todos" :key="todo.id" class="todo-item">
         <span>{{ todo.userId }}</span
