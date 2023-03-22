@@ -1812,7 +1812,7 @@ export default () => {
 };
 ```
 
-### 3. **Vite 打包优化** 3. webpack 的 webpack-bundle-analyzer 这个插件，在 vite 里面有差不多的插件吗
+### 3. **Vite 打包优化** webpack 的 webpack-bundle-analyzer 这个插件，在 vite 里面有差不多的插件吗
 
 https://github.com/btd/rollup-plugin-visualizer
 
@@ -1825,7 +1825,13 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 import { defineConfig, type PluginOption } from 'vite'
 export default defineConfig({
-  plugins: [visualizer() as PluginOption],
+  plugins: [visualizer({
+      open: true,
+        gzipSize: true,
+        brotliSize: true,
+        emitFile: true,
+        filename: 'stats.html'
+  }) as PluginOption],
 })
 
 ```

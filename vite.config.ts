@@ -1,6 +1,6 @@
 import {fileURLToPath, URL} from 'node:url';
 
-import {defineConfig, loadEnv} from 'vite';
+import {defineConfig, loadEnv, type PluginOption} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
@@ -9,6 +9,9 @@ import Components from 'unplugin-vue-components/vite';
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers';
 
 import viteCompression from 'vite-plugin-compression';
+
+import {visualizer} from 'rollup-plugin-visualizer';
+
 // https://vitejs.dev/config/
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,7 +44,14 @@ export default defineConfig(({command, mode}) => {
         ],
         dts: 'src/components.d.ts'
       }),
-      viteCompression()
+      viteCompression(),
+      visualizer({
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+        emitFile: true,
+        filename: 'stats.html'
+      }) as PluginOption
     ],
     css: {
       preprocessorOptions: {
@@ -77,5 +87,3 @@ export default defineConfig(({command, mode}) => {
     }
   };
 });
-
- 
