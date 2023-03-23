@@ -1,6 +1,6 @@
 {
   "name": "vite4-vue3-app2",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -17,6 +17,7 @@
     "prepare": "husky install",
     "commit": "cz",
     "changelog": "conventional-changelog -p typescript -i CHANGELOG.md -s -r 0",
+    "changelog-docs": "conventional-changelog -p typescript -i docs/CHANGELOG.md -s -r 0",
     "docs": "docsify serve docs"
   },
   "dependencies": {
