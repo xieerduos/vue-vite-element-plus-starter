@@ -24,7 +24,7 @@ export default defineConfig(({command, mode}) => {
     define: {
       __APP_ENV__: env.APP_ENV
     },
-    base: './',
+    base: '/',
     build: {
       outDir: mode,
       rollupOptions: {

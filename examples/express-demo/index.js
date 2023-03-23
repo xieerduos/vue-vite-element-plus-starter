@@ -4,9 +4,10 @@ const cors = require('cors');
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
-app.get('/api/todos', function (req, res) {
+app.get('/todos', function (req, res) {
+  console.log(Date.now());
   const todos = getTodos();
   res.json(todos);
 });

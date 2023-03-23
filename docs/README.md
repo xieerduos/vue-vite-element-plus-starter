@@ -2137,17 +2137,278 @@ export default defineConfig(({command, mode}) => {
 
 ## 二十、Windows nginx 部署项目
 
+### 1. 安装 nginx 启动和修改配置
+
 1. 安装 nginx
+
+http://nginx.org/en/download.html
+
 2. 修改配置文件
+
+```conf
+
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       8080;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location ^~/api/ {
+            proxy_pass http://localhost:4567;
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_cookie_path / "/; httponly; secure; SameSite=Strict";
+        }
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
+
+```
+
 3. 运行 nginx.exe 文件
+
+### 2. 启动后端服务 nodejs 反向代理到后端
+
+```bash
+cd examples/express-demo
+```
+
+```bash
+npm start
+```
+
+### 3. 打包配置环境变量，直接把后端的服务地址写死
+
+.env.prod
+
+```bash
+NODE_ENV=production
+
+VITE_BASE_URL=http://localhost:4567
+```
+
+```bash
+npm run prod
+```
+
+```bash
+cd examples/express-demo
+```
+
+跨域问题 服务端处理 - 跨域资源共享
+
+examples/express-demo/index.js
+
+```js
+app.use(cors());
+```
+
+### 4. history 模式如何部署项目
+
+https://cli.vuejs.org/zh/guide/deployment.html#bitbucket-cloud
+
+```conf
+location / {
+   root   html;
+   # index  index.html index.htm;
+   index  index.html;
+   try_files $uri $uri/ /index.html;
+}
+```
+
+### 5. 代码路径不放在项目的 html 目录
+
+```conf
+location / {
+   # root   html;
+   root   D:\Desktop\vite4-vue3-app2\qa;
+   # index  index.html index.htm;
+   index  index.html;
+   try_files $uri $uri/ /index.html;
+}
+```
+
+### 6. nginx 反向代理 - 重写路径问题
+
+nginx.conf 配置，我希望当接口 /api 开头的时候反向代理到 http://localhost:8080，并且重写 /api 为空字符串，比如 /api/todos/ 那么 反向代理 到 http://localhost:8080/todos ，如何写 nginx.conf ？
+
+```conf
+server {
+    listen 80;
+    server_name example.com;
+
+    location /api/ {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_cookie_path / "/; httponly; secure; SameSite=Strict";
+    }
+
+    # 其他配置
+}
+
+```
+
+在上面的配置中，当请求以 /api/ 开头时，Nginx 将使用 rewrite 来删除 URI 中的 /api/ 部分，然后使用 proxy_pass 将请求转发到指定的地址。注意，rewrite 指令的第一个参数是一个正则表达式，它匹配 URI 中的 /api/ 部分，并使用括号包裹其他部分以便重写。重写后的 URI 将会被传递给 proxy_pass 指定的地址。
+
+### 7. bug 解决 `Failed to load module script: Expected a JavaScript module`
+
+当我把 vue 路由模式修改成 history 方式的时候
+
+访问 /log/12342134 刷新浏览器的时候报如下错误
+
+> <p style="color:red;">Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "text/html". Strict MIME type checking is enforced for module scripts per HTML spec. </p>
+
+解决办法 把 `vite.config.ts` 的 `base` 字段修改为 `/` 就可以了
+
+```js
+export default defineConfig(({command, mode}) => {
+  // 根据当前工作目录中的 `mode` 加载 .env 文件
+  // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    // vite 配置
+    define: {
+      __APP_ENV__: env.APP_ENV
+    },
+    base: '/'
+    // ...
+  };
+});
+```
+
+参考链接
+
+https://axellarsson.com/blog/expected-javascript-module-script-server-response-mimetype-text-html/
 
 ## 二十一、Docker 部署前端项目
 
+### 1. 安装 docker
+
 https://www.docker.com/products/docker-desktop/
 
-Dockerfile
+### 2. 创建 .dockerignore
 
-```Dockerfile
+```.dockerignore
+node_modules
+.git
+```
+
+### 3. 创建 Dockerfile
+
+```dockerfile
 # 使用官方的 node 镜像作为基础镜像
 # 从 node:14.19.3 镜像创建一个名为 development 的镜像
 FROM node:14.19.3 AS development
@@ -2168,7 +2429,7 @@ RUN npm install --registry=https://registry.npm.taobao.org
 COPY . .
 
 # 打包构建
-RUN npm run prod
+RUN npm run rd
 
 # 从 development 镜像创建一个名为 build 的镜像
 FROM development AS build
@@ -2177,7 +2438,7 @@ FROM development AS build
 FROM nginx:1.21.6
 
 # 从 build 镜像中复制 nginx 配置文件到容器中的 /etc/nginx/conf.d/default.conf
-COPY --from=build /app/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 设置工作目录为 /usr/share/nginx/html
 WORKDIR /usr/share/nginx/html
@@ -2186,28 +2447,102 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # 从 build 镜像中复制项目文件到容器中的 /usr/share/nginx/html 目录
-COPY --from=build /app/prod .
+COPY --from=build /app/rd .
 
 # 设置容器的入口点，运行 nginx 命令
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 # 此 Dockerfile 使用了多阶段构建，先在开发环境中构建项目，再在生产环境中运行项目。
 # 这样可以保证镜像的小尺寸，同时避免了在生产环境中安装多余的工具。
+```
 
+### 4. nginx.conf
+
+```conf
+# 定义一个名为 loadbackend 的后端服务
+upstream loadbackend {
+    server vite4_vue3_backend:4567;
+}
+# 配置 Nginx 服务器
+server {
+    listen 80; # 监听80端口号
+    server_name localhost; # 有域名填写域名地址 dev.baidu.com
+
+    # 匹配以 /api/ 开头的请求，并将其代理到 loadbackend 后端服务
+    location ^~/api/ {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://loadbackend;
+
+        # 设置 HTTP 头信息
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_cookie_path / "/; httponly; secure; SameSite=Strict";
+    }
+    location / {
+        # 设置 HTTP 响应头信息，禁用浏览器缓存
+        add_header Cache-Control no-cache;
+        # 指定前端静态资源存放的路径
+        root /usr/share/nginx/html; # 前端代码存放的路径
+        # 尝试匹配静态资源，如果找不到则返回 index.html
+        try_files $uri $uri/ /index.html; # 匹配不到返回根部.html文件，spa history mode
+    }
+}
 
 ```
 
-docker-compose.yml
+### 5. examples/express-demo/.dockerignore
+
+```.dockerignore
+node_modules
+.git
+```
+
+### 6. examples/express-demo/Dockerfile
+
+```dockerfile
+# 使用 Node.js 14.19.3 作为基础镜像
+FROM node:14.19.3
+
+# 在容器中创建一个工作目录
+WORKDIR /usr/src/app
+
+# 将当前目录下的所有文件复制到容器中的工作目录
+COPY . /usr/src/app
+
+# 安装项目所需的依赖
+RUN npm install
+
+# 将容器的 4567 端口暴露出来
+EXPOSE 4567
+
+# 运行容器时执行的命令，这里为空，表示不执行任何命令
+CMD []
+
+```
+
+### 7. docker-compose.yml
 
 ```yml
+# 定义服务名称和配置
 services:
-  vite_vue3_demo:
+  # 定义一个使用 Vite4, Vue3 和 Nginx 的服务
+  vite4_vue3_nginx:
+    # 构建 Docker 镜像
     build: .
-    container_name: vite_vue3_demo
-    volumes:
-      - ./prod:/app/prod # 挂载卷 把当前项目根目录的 ./frontend/rd 映射到 容器/app/rd
+    # 设置容器名称
+    container_name: vite4_vue3_nginx
+    # 将容器的 80 端口映射到主机的 8000 端口
     ports:
       - 8000:80
+  # 定义一个使用 Vite4 和 Vue3 的 Express 后端服务
+  vite4_vue3_backend:
+    # 构建 Docker 镜像
+    build: ./examples/express-demo
+    # 设置容器名称
+    container_name: vite4_vue3_backend
+    # 运行 npm start 命令来启动服务
+    command: npm start
 ```
 
 ```bash
@@ -2217,6 +2552,12 @@ docker-compse build
 ```bash
 docker-compse up -d
 ```
+
+这两行命令是用于在 Docker 环境下构建和运行容器应用的。
+
+- `docker-compose build`：该命令用于构建 Docker Compose 文件中定义的服务的镜像。在执行该命令时，Docker Compose 会查找当前目录下的 docker-compose.yml 文件，并根据该文件中的配置信息构建镜像。
+
+- `docker-compose up -d`：该命令用于启动 Docker Compose 文件中定义的服务。-d 参数表示以守护进程模式运行，即在后台运行。在执行该命令时，Docker Compose 会查找当前目录下的 docker-compose.yml 文件，并根据该文件中的配置信息启动服务。
 
 <!-- ## 启动 Nodejs 后端项目 - 登录接口处理
 
