@@ -1951,9 +1951,28 @@ export default defineConfig({
 
 在上面的示例中，chunkFileNames 的值为 `[name]-[hash].js`，表示生成的 chunk 文件名将由模块的名称和 hash 值组成。比如，一个名为 foo.js 的 chunk，可能生成的文件名为 foo-abcdefg.js。
 
-### 5. **Vite 打包优化** Content Delivery Network(cdn)
+### 5. **Vite 打包优化** Content Delivery Network(CDN)
 
-https://blog.csdn.net/m0_68324632/article/details/126828350
+#### (1) 什么是 CDN
+
+CDN 是内容分发网络（Content Delivery Network）的缩写。它是一种通过在全球多个节点上分布内容副本，以更快地将内容传递给用户的网络系统。
+
+CDN 通常由一组位于全球各地的服务器组成，这些服务器分别称为边缘节点（Edge Node）。边缘节点可以存储一份或多份网站内容的副本，并在需要时通过最接近用户的节点交付内容。这样可以减少延迟和带宽成本，提高用户的访问速度和网站性能。
+
+CDN 常被用于加速网站、视频和音频流、软件和游戏下载、移动应用程序等内容的分发。
+
+#### (2) 把某个模块分离出去使用 cdn 的方式加载
+
+1. 安装 rollup-plugin-external-globals
+
+```bash
+npm install rollup-plugin-external-globals -D
+```
+
+2. vite.config.ts
+
+引入 rollup-plugin-external-globals
+注释按需加载 element ui 模块
 
 ```ts
 import externalGlobals from 'rollup-plugin-external-globals';
@@ -1969,11 +1988,58 @@ export default defineConfig({
         })
       ]
     }
-  }
+  },
+  plugins: [
+    vue(),
+    vueJsx()
+    // AutoImport({
+    //   resolvers: [ElementPlusResolver()]
+    // }),
+    // Components({
+    //   extensions: ['vue', 'md'],
+    //   // allow auto import and register components used in markdown
+    //   include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+    //   resolvers: [
+    //     ElementPlusResolver({
+    //       importStyle: 'sass'
+    //     })
+    //   ],
+    //   dts: 'src/components.d.ts'
+    // }),
+  ]
 });
 ```
 
+3. App.vue 自定义命名空间改为 el
+
+```html
+<el-config-provider namespace="el">
+  <header>
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+    </nav>
+  </header>
+  <RouterView />
+</el-config-provider>
+```
+
+4. main.ts 全量引入 element ui
+
+```ts
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+
+const app = createApp(App);
+
+app.use(ElementPlus);
+```
+
+5. index.html 全局引入 `element ui` `vue` cdn
+
 详细看 element plus 官网
+
+index.html
 
 ```html
 <!DOCTYPE html>
@@ -1983,19 +2049,26 @@ export default defineConfig({
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" />
   </head>
   <body>
     <div id="app"></div>
-    <!-- Import style -->
-    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css" /> -->
-    <!-- Import Vue 3 -->
     <script src="//cdn.jsdelivr.net/npm/vue@3"></script>
     <!-- Import component library -->
-    <!-- <script src="//cdn.jsdelivr.net/npm/element-plus"></script> -->
+    <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 ```
+
+#### (3) 如何配置 - 全站加速 DCDN（推荐）
+
+- 1、需要购买 全站加速服务（自行购买，这里不做演示）
+- 2、进入`全站加速 DCDN`控制台
+- 3、添加域名 - 新增资源站 - 填写 ip 或者域名信息
+- 4、域名解析 - 添加 CNAME - 按照引导添加主机记录 - 记录值
+
+添加后 一般需要等 10 到 30 分钟才会生效
 
 ## 十九 **其他修改**
 
