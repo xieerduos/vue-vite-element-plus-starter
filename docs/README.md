@@ -2545,12 +2545,27 @@ services:
     command: npm start
 ```
 
+8. docker compose 命令介绍
+
 ```bash
+# 或者运行这个命令 docker compose build
 docker-compse build
 ```
 
 ```bash
+# 或者运行这个命令 docker compose down
+docker-compse down
+```
+
+```bash
+# 或者运行这个命令 docker compose up -d
 docker-compse up -d
+```
+
+
+```bash
+# 查看正在运行的docker容器
+docker ps
 ```
 
 这两行命令是用于在 Docker 环境下构建和运行容器应用的。

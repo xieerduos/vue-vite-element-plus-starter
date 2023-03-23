@@ -1,0 +1,19 @@
+# 定义服务名称和配置
+services:
+  # 定义一个使用 Vite4, Vue3 和 Nginx 的服务
+  vite4_vue3_nginx:
+    # 构建 Docker 镜像
+    build: .
+    # 设置容器名称
+    container_name: vite4_vue3_nginx
+    # 将容器的 80 端口映射到主机的 8000 端口
+    ports:
+      - 8000:80
+  # 定义一个使用 Vite4 和 Vue3 的 Express 后端服务
+  vite4_vue3_backend:
+    # 构建 Docker 镜像
+    build: ./examples/express-demo
+    # 设置容器名称
+    container_name: vite4_vue3_backend
+    # 运行 npm start 命令来启动服务
+    command: npm start
