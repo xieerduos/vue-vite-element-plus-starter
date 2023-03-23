@@ -114,10 +114,10 @@
             hook.beforeEach(function (html) {
               var url = 'https://github.com/xieerduos/xieerduos.github.io/blob/main/' + vm.route.file;
               var editHtml = '[📝 EDIT DOCUMENT](' + url + ')\n';
-              var beianNum = /ffffee.com$/gi.test(window.location.host) ? '京ICP备20016634号-2' : '京ICP备20016634号-1';
-              var beianURLStr = `\n<a href="https://beian.miit.gov.cn/" target="_blank">${beianNum}</a>\n`;
+              // var beianNum = /ffffee.com$/gi.test(window.location.host) ? '京ICP备20016634号-2' : '京ICP备20016634号-1';
+              // var beianURLStr = `\n<a href="https://beian.miit.gov.cn/" target="_blank">${beianNum}</a>\n`;
 
-              return editHtml + html + '\n----\nLast modified {docsify-updated} ' + editHtml + beianURLStr;
+              return editHtml + html + '\n----\nLast modified {docsify-updated} ' + editHtml;
             });
           },
           function (hook, vm) {
