@@ -2100,6 +2100,41 @@ npm run docs
 }
 ```
 
+### 路由模式修改为 hash
+
+router/index.ts
+
+```ts
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+
+const router = createRouter({
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
+```
+
+### 解决路径白屏问题
+
+vite.config.ts
+
+```ts
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default defineConfig(({command, mode}) => {
+  // 根据当前工作目录中的 `mode` 加载 .env 文件
+  // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    // vite 配置
+    define: {
+      __APP_ENV__: env.APP_ENV
+    },
+    base: './'
+    // ...
+  };
+});
+```
+
 ## 二十、Windows nginx 部署项目
 
 1. 安装 nginx

@@ -24,6 +24,7 @@ export default defineConfig(({command, mode}) => {
     define: {
       __APP_ENV__: env.APP_ENV
     },
+    base: './',
     build: {
       outDir: mode,
       rollupOptions: {
@@ -88,7 +89,9 @@ export default defineConfig(({command, mode}) => {
     },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@apis': fileURLToPath(new URL('./src/components', import.meta.url)),
       }
     },
     server: {
