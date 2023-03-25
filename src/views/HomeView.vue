@@ -42,7 +42,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .home-container {
-  height: 100vw;
+  // height: 100vw;
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -1,7 +1,8 @@
 import 'normalize.css/normalize.css'; // 引入 normalize.css
 import {createApp} from 'vue';
 import {createPinia} from 'pinia';
-
+import '@/composables';
+// import '@/composables';
 import App from './App.vue';
 import router from './router';
 import './styles/index.scss';

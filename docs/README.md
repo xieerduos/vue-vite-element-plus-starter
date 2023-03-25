@@ -2562,7 +2562,6 @@ docker-compse down
 docker-compse up -d
 ```
 
-
 ```bash
 # 查看正在运行的docker容器
 docker ps
@@ -2573,6 +2572,27 @@ docker ps
 - `docker-compose build`：该命令用于构建 Docker Compose 文件中定义的服务的镜像。在执行该命令时，Docker Compose 会查找当前目录下的 docker-compose.yml 文件，并根据该文件中的配置信息构建镜像。
 
 - `docker-compose up -d`：该命令用于启动 Docker Compose 文件中定义的服务。-d 参数表示以守护进程模式运行，即在后台运行。在执行该命令时，Docker Compose 会查找当前目录下的 docker-compose.yml 文件，并根据该文件中的配置信息启动服务。
+
+## 二十二、bug 修复
+
+### 1. 暗黑模式 在 home 页面刷新不生效
+
+原因：路由按需加载、暗黑模式代码没有被执行
+
+解决方法：
+
+- 不使用按需加载
+- 全局引入暗黑模式代码
+
+main.ts
+
+```ts
+import '@/composables';
+```
+
+### 2. home 页面宽度缩小样式不正确
+
+home 页面高度 100vw 改为 100vh
 
 <!-- ## 启动 Nodejs 后端项目 - 登录接口处理
 
