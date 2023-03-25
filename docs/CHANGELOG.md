@@ -1,5 +1,20 @@
+## <small>0.0.2 (2023-03-25)</small>
+
+* docs: 更新课程介绍和如何获取视频资料 6a1c033
+* docs: 更新changlog.md文档 7a63ca7
+* fix: 修复暗黑模式不生效和home页面样式错误 6da0462
+
+
+
 ## <small>0.0.1 (2023-03-23)</small>
 
+* docs: 创建文档和 git 初始化项目-1 4472be2
+* docs: 生成changelog文件 882bb30
+* docs: 生成changelog文件 ba2400f
+* docs: vite 打包优化 cdn 介绍 Content Delivery Network(CDN) b741ee6
+* docs(docs/): 创建文档和 git 初始化项目-3-docsify 支持暗黑主题、离线查看 4af55dd
+* docs(docs/index.html): 创建文档和 git 初始化项目-2-支持mermaid插件 78750f2
+* docs(docs/README.md): 更新文档 11d7cae
 * feat: 按需引入element-plus&&对比了按需和完整引入的包的大小 a59d6c1
 * feat: 获取数据修改为jsonplaceholder方式 e79d43f
 * feat: 添加Node express 提供后端接口数据demo a36c784
@@ -19,11 +34,6 @@
 * feat: vue router介绍 6ad213c
 * feat: windows nginx 部署项目 3abdabf
 * fix: 其他修改 76f5efe
-* docs: 创建文档和 git 初始化项目-1 4472be2
-* docs: vite 打包优化 cdn 介绍 Content Delivery Network(CDN) b741ee6
-* docs(docs/): 创建文档和 git 初始化项目-3-docsify 支持暗黑主题、离线查看 4af55dd
-* docs(docs/index.html): 创建文档和 git 初始化项目-2-支持mermaid插件 78750f2
-* docs(docs/README.md): 更新文档 11d7cae
 * chore: 配置多环境打包 de9938d
 * chore: 生成 CHANGELOG 文件 c628304
 * chore: 使用 commitizen 工具生成 commit 消息 edc427f
