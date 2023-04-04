@@ -1,6 +1,88 @@
 # vite4-vue3-app2
 
-This template should help get you started developing with Vue 3 in Vite.
+## 一、如何获取源码
+
+源码地址：https://ffffee.com/download/vite4-vue3-app2.zip
+
+用户名和密码在学浪答疑群公告
+
+_购买课程后自动会加入答疑群_
+
+## 二、启动文档
+
+全局安装 docsify-cli
+
+```bash
+# MacOS `sudo npm install -g docsify-cli`
+npm install -g docsify-cli
+```
+
+启动 docs
+
+```bash
+npm run docs
+```
+
+访问文档 http://localhost:3000
+
+## 三、启动项目
+
+安装依赖
+
+```bash
+# npm install --registry=https://registry.npm.taobao.org
+npm install
+```
+
+开发环境
+
+```bash
+npm run dev
+```
+
+## 四、打包项目
+
+联调环境
+
+```bash
+npm run rd
+```
+
+测试环境
+
+```bash
+npm run qa
+```
+
+生产环境
+
+```bash
+npm run prod
+```
+
+## 五、ESlint 修复代码
+
+执行下面命令，将会自动修复代码
+
+```bash
+npm run lint
+```
+
+## 六、生成 changelog
+
+生成 `/CHANGELOG.md`
+
+```bash
+npm run changelog
+```
+
+生成 `/docs/CHANGELOG.md`
+
+```bash
+npm run changelog-docss
+```
+
+---
 
 ## Recommended IDE Setup
 
@@ -13,34 +95,10 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
 1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
 ## Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
