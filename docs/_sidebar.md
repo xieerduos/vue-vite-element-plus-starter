@@ -1,4 +1,5 @@
 - [vite4+vue3+element-plus](/README.md)
 - [获取课程资料-购买课程必看](/course-install-xuelang.md)
+- [获取源码-购买课程必看](/course-install-code.md)
 - [课程介绍-购买课程必看](/course-introduce.md)
 - [更新日志](/CHANGELOG.md)
