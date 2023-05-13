@@ -83,7 +83,7 @@ npm run changelog-docss
 ## 七、构建部署
 
 ```bash
-cd docker-compose build
+docker-compose build
 docker-compose up -d
 ```
 

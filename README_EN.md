@@ -87,7 +87,7 @@ npm run changelog-docs
 ## VII. Build and Deploy
 
 ```bash
-cd docker-compose build
+docker-compose build
 docker-compose up -d
 ```
 
