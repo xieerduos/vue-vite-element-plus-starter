@@ -1,86 +1,90 @@
-> [English Version](./README_EN.md)
+> [中文版本](./README.md)
 
 # vue-vite-element-plus-starter
 
-## 一、项目介绍
+## I. Project Introduction
 
 [document](./docs/README.md)
 
-## 二、启动文档
+## II. Startup Documentation
 
-全局安装 docsify-cli
+Globally install docsify-cli
 
 ```bash
+
 # MacOS `sudo npm install -g docsify-cli`
+
 npm install -g docsify-cli
 ```
 
-启动 docs
+Launch docs
 
 ```bash
 npm run docs
 ```
 
-访问文档 http://localhost:3000
+Access the documentation at http://localhost:3000
 
-## 三、启动项目
+## III. Startup Project
 
-安装依赖
+Install dependencies
 
 ```bash
+
 # npm install --registry=https://registry.npm.taobao.org
+
 npm install
 ```
 
-开发环境
+Development environment
 
 ```bash
 npm run dev
 ```
 
-## 四、打包项目
+## IV. Project Packaging
 
-联调环境
+Joint debugging environment
 
 ```bash
 npm run rd
 ```
 
-测试环境
+Testing environment
 
 ```bash
 npm run qa
 ```
 
-生产环境
+Production environment
 
 ```bash
 npm run prod
 ```
 
-## 五、ESlint 修复代码
+## V. ESLint Code Repair
 
-执行下面命令，将会自动修复代码
+Running the following command will automatically fix the code
 
 ```bash
 npm run lint
 ```
 
-## 六、生成 changelog
+## VI. Generate changelog
 
-生成 `/CHANGELOG.md`
+Generate `/CHANGELOG.md`
 
 ```bash
 npm run changelog
 ```
 
-生成 `/docs/CHANGELOG.md`
+Generate `/docs/CHANGELOG.md`
 
 ```bash
-npm run changelog-docss
+npm run changelog-docs
 ```
 
-## 七、构建部署
+## VII. Build and Deploy
 
 ```bash
 cd docker-compose build
@@ -91,11 +95,11 @@ http://localhost:8000
 
 ---
 
-## 八、Recommended IDE Setup
+## VIII. Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## 九、Type Support for `.vue` Imports in TS
+## IX. Type Support for `.vue` Imports in TS
 
 TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
@@ -106,6 +110,6 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## 十、Customize configuration
+## X. Customize configuration
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
