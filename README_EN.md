@@ -4,7 +4,7 @@
 
 ## I. Project Introduction
 
-[document](./docs/README.md)
+[Online Document Preview](https://xieerduos.github.io/vue-vite-element-plus-starter)
 
 ## II. Startup Documentation
 

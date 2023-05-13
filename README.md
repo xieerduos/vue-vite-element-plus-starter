@@ -4,7 +4,7 @@
 
 ## 一、项目介绍
 
-[document](./docs/README.md)
+[在线文档](https://xieerduos.github.io/vue-vite-element-plus-starter)
 
 ## 二、启动文档
 
