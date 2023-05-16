@@ -79,5 +79,5 @@ npm run changelog
 生成 `/docs/CHANGELOG.md`
 
 ```bash
-npm run changelog-docss
+npm run changelog-docs
 ```

@@ -77,7 +77,7 @@ npm run changelog
 生成 `/docs/CHANGELOG.md`
 
 ```bash
-npm run changelog-docss
+npm run changelog-docs
 ```
 
 ## 七、构建部署
